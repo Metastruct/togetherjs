@@ -117,8 +117,11 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
     constructor: function (el) {
       this.element = $(el)[0];
       assert($(this.element).hasClass("ace_editor"));
+	  this.session = this.element.env.editor.getSession();
+	  
       this._change = this._change.bind(this);
-      this._editor().document.on("change", this._change);
+      this._session().on("change", this._change);
+	  
     },
 
     tracked: function (el) {
@@ -126,11 +129,11 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
     },
 
     destroy: function (el) {
-      this._editor().document.removeListener("change", this._change);
+      this._session().removeListener("change", this._change);
     },
 
     update: function (msg) {
-      this._editor().document.setValue(msg.value);
+      this._session().setValue(msg.value);
     },
 
     init: function (update, msg) {
@@ -141,12 +144,12 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
       return {
         element: this.element,
         tracker: this.trackerName,
-        value: this._editor().document.getValue()
+        value: this._session().getValue()
       };
     },
 
-    _editor: function () {
-      return this.element.env;
+    _session: function () {
+      return this.session;
     },
 
     _change: function (e) {
@@ -163,7 +166,7 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
     },
 
     getContent: function() {
-      return this._editor().document.getValue();
+      return this._session().getValue();
     }
   });
 
