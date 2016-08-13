@@ -137,18 +137,16 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
     },
 
     getSelection: function () {
-      range = this._editor().editor.selection.getRange()
-      startIndex = this._editor().editor.session.doc.positionToIndex(range.start, 0)
-      endIndex = this._editor().editor.session.doc.positionToIndex(range.end, 0)
-      return [startIndex, endIndex]
+      range = this._session().selection.getRange();
+      var startIndex = this._session().getDocument().positionToIndex(range.start, 0);
+      var endIndex = this._session().getDocument().positionToIndex(range.end, 0);
+      return [startIndex, endIndex];
     },
 
     setSelection: function (selection) {
-      startIndex = selection[0]
-      endIndex = selection[1]
-      startPos = this._editor().editor.session.doc.indexToPosition(startIndex, 0)
-      endPos = this._editor().editor.session.doc.indexToPosition(endIndex, 0)
-      this._editor().editor.selection.setSelectionRange(range, false);
+      var startIndex = selection[0];
+      var endIndex = selection[1];
+      this._session().selection.setSelectionRange(range, false);
     },
 
     init: function (update, msg) {
@@ -164,6 +162,9 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
     },
 
     _session: function () {
+      return this.session;
+    },
+    _editor: function () {
       return this.session;
     },
 
@@ -195,6 +196,11 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
 
   TogetherJS.addTracker(AceEditor, true /* skip setInit */);
 
+  
+  
+  
+  
+  
   var CodeMirrorEditor = util.Class({
     trackerName: "CodeMirrorEditor",
 
